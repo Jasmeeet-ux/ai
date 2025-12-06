@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Skills | Premium E-Learning</title>
+    <meta name="description"
+        content="A fully responsive, professional dark-theme educational website similar to PW Skills, built with pure HTML, CSS, and vanilla JavaScript.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* CSS Reset and Global Variables */
+        :root {
+            --color-dark-primary: #0f0f0f;
+            --color-dark-secondary: #1a1a1a;
+            --color-dark-card: #1f1f1f;
+            --color-neon-blue: #00bcd4;
+            /* Brighter Blue */
+            --color-neon-purple: #9c27b0;
+            /* Deep Purple */
+            --color-accent-mix: linear-gradient(90deg, #00bcd4, #9c27b0);
+            --color-text-light: #e0e0e0;
+            --color-text-medium: #a0a0a0;
+            --border-radius-large: 12px;
+            --transition-speed: 0.3s;
+            --glass-blur: 10px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-dark-primary);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 100px 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 30px;
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--color-text-light);
+            background: var(--color-accent-mix);
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 188, 212, 0.4);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 188, 212, 0.6);
+        }
+
+        /* 1. Navigation Bar */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: background var(--transition-speed), backdrop-filter var(--transition-speed);
+        }
+
+        .header.scrolled {
+            background-color: rgba(30, 30, 30, 0.7);
+            /* Slightly darker than primary for glass effect */
+            backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid rgba(156, 39, 176, 0.3);
+            /* Subtle neon border */
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-decoration: none;
+            background: var(--color-accent-mix);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+            transition: opacity var(--transition-speed);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text-medium);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: color var(--transition-speed);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background: var(--color-neon-blue);
+            transition: width var(--transition-speed);
+        }
+
+        .nav-links a:hover {
+            color: var(--color-neon-blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .hamburger-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-neon-blue);
+            z-index: 1001;
+            transition: color var(--transition-speed);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 300px;
+            background-color: var(--color-dark-secondary);
+            z-index: 999;
+            transform: translateX(100%);
+            transition: transform 0.4s ease-in-out;
+            padding: 80px 40px 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+        }
+
+        .mobile-menu ul li {
+            margin-bottom: 30px;
+        }
+
+        .mobile-menu ul li a {
+            text-decoration: none;
+            color: var(--color-text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 5px;
+            transition: color var(--transition-speed);
+        }
+
+        .mobile-menu ul li a:hover {
+            color: var(--color-neon-purple);
+        }
+
+        /* 2. Hero Section */
+        #hero {
+            position: relative;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            /* Account for fixed nav */
+            overflow: hidden;
+            background-color: var(--color-dark-secondary);
+        }
+
+        .hero-content {
+            max-width: 55%;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlide 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeInSlide {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-headline {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .highlight-text {
+            background: var(--color-accent-mix);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtext {
+            font-size: 1.1rem;
+            color: var(--color-text-medium);
+            margin-bottom: 40px;
+        }
+
+        .hero-illustration {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%) scale(0.9);
+            width: 40%;
+            max-width: 500px;
+            height: auto;
+            opacity: 0;
+            animation: fadeInSlideRight 1s ease-out forwards;
+            animation-delay: 0.8s;
+            filter: drop-shadow(0 0 30px rgba(0, 188, 212, 0.5));
+        }
+
+        @keyframes fadeInSlideRight {
+            to {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        /* Placeholder for Illustration/Image */
+        .hero-illustration-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--color-neon-blue) 0%, var(--color-neon-purple) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--color-text-light);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 25px rgba(0, 188, 212, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(156, 39, 176, 0.6);
+            }
+        }
+
+        /* 3. Services / Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background-color: var(--color-dark-card);
+            padding: 30px;
+            border-radius: var(--border-radius-large);
+            border: 1px solid var(--color-dark-card);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.05), transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-speed);
+            pointer-events: none;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 188, 212, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 188, 212, 0.5);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            background: var(--color-accent-mix);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            display: inline-block;
+            filter: drop-shadow(0 0 5px rgba(0, 188, 212, 0.7));
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+        }
+
+        .feature-card p {
+            color: var(--color-text-medium);
+        }
+
+        /* 4. Contact / Lead Form */
+        #contact {
+            background-color: var(--color-dark-secondary);
+        }
+
+        .contact-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--color-dark-card);
+            padding: 40px;
+            border-radius: var(--border-radius-large);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-text-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--color-dark-secondary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--color-text-light);
+            font-size: 1rem;
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-neon-blue);
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            /* Red for error */
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .submit-button {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            background: var(--color-accent-mix);
+            color: var(--color-text-light);
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.4);
+            transition: transform var(--transition-speed), opacity var(--transition-speed);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(156, 39, 176, 0.6);
+        }
+
+        /* 5. Footer */
+        .footer {
+            background-color: var(--color-dark-primary);
+            padding: 50px 0 20px;
+            border-top: 1px solid rgba(156, 39, 176, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            padding-bottom: 30px;
+        }
+
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--color-neon-blue);
+            font-weight: 700;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            text-decoration: none;
+            color: var(--color-text-medium);
+            transition: color var(--transition-speed);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--color-neon-purple);
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            color: var(--color-text-medium);
+            font-size: 0.95rem;
+        }
+
+        .social-icons a {
+            font-size: 1.5rem;
+            color: var(--color-text-medium);
+            margin-right: 15px;
+            transition: color var(--transition-speed), transform var(--transition-speed);
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icons .fa-youtube:hover {
+            color: #ff0000;
+        }
+
+        .social-icons .fa-instagram:hover {
+            color: #e1306c;
+        }
+
+        .social-icons .fa-linkedin-in:hover {
+            color: #0a66c2;
+        }
+
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: var(--color-text-medium);
+        }
+
+        /* Responsive Design (Media Queries) */
+        @media (max-width: 992px) {
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .hero-illustration {
+                display: none;
+                /* Hide illustration on tablets/mobile */
+            }
+
+            .hero-headline {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section-padding {
+                padding: 60px 20px;
+            }
+
+            .hero-headline {
+                font-size: 2rem;
+            }
+
+            .mobile-menu {
+                width: 100%;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-icons {
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">PROSKILLS</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#courses">Courses</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger-menu" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="#hero" class="mobile-link">Home</a></li>
+            <li><a href="#courses" class="mobile-link">Courses</a></li>
+            <li><a href="#about" class="mobile-link">About</a></li>
+            <li><a href="#contact" class="mobile-link">Contact</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <section id="hero" class="section-padding">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-headline">
+                        Master the Skills of Tomorrow with <span class="highlight-text">Premium Education</span>
+                    </h1>
+                    <p class="hero-subtext">
+                        Your one-stop platform for comprehensive, industry-aligned tech and professional courses. Start
+                        your learning journey today and build a future proof career.
+                    </p>
+                    <a href="#courses" class="cta-button">Start Learning <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="hero-illustration">
+                <div class="hero-illustration-placeholder">
+
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="section-padding">
+            <div class="container text-center">
+                <h2>Why Choose <span class="highlight-text">ProSkills?</span></h2>
+                <p class="hero-subtext" style="margin-bottom: 50px;">
+                    We offer a modern, engaging, and highly effective learning experience.
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Industry-Aligned Curriculum</h3>
+                        <p>Learn the most in-demand technologies and tools used by top companies worldwide.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Hands-On Projects</h3>
+                        <p>Gain practical experience with real-world projects and build a powerful portfolio.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <i class="fas fa-user-tie"></i>
+                        <h3>Expert Mentorship</h3>
+                        <p>Get personalized guidance and doubt resolution from industry experts and mentors.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Certified Courses</h3>
+                        <p>Earn a professional, industry-recognized certificate upon successful completion of your
+                            course.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <i class="fas fa-infinity"></i>
+                        <h3>Lifetime Access</h3>
+                        <p>Revisit your course materials, updates, and lectures anytime, forever.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Dedicated Support</h3>
+                        <p>24/7 technical and academic support to ensure a smooth learning process.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding">
+            <div class="container">
+                <h2 class="text-center">Ready to <span class="highlight-text">Connect?</span></h2>
+                <p class="hero-subtext text-center" style="margin-bottom: 40px;">
+                    Send us a message and our team will get back to you shortly.
+                </p>
+
+                <div class="contact-form-container">
+                    <form id="lead-form">
+
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            <div class="error-message" data-field="name">Name is required.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                            <div class="error-message" data-field="email">Valid email is required.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number (Optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+91-1234567890">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5"
+                                placeholder="Tell us about your learning goals..." required></textarea>
+                            <div class="error-message" data-field="message">Message is required.</div>
+                        </div>
+
+                        <button type="submit" class="submit-button">Submit Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+
+                <div class="footer-col">
+                    <a href="#" class="logo">PROSKILLS</a>
+                    <p class="contact-info" style="margin-top: 15px;">
+                        &copy; 2024 ProSkills.<br> All Rights Reserved.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt" style="color: var(--color-neon-purple);"></i> 123 Learning
+                            Path, Edutown, Global</p>
+                        <p><i class="fas fa-envelope" style="color: var(--color-neon-purple);"></i> info@proskills.com
+                        </p>
+                        <p><i class="fas fa-phone-alt" style="color: var(--color-neon-purple);"></i> +1 (555) 123-4567
+                        </p>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="https://www.youtube.com" target="_blank" aria-label="YouTube"><i
+                                class="fab fa-youtube"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <p class="contact-info" style="margin-top: 15px; font-style: italic;">
+                        Follow us for updates and free resources!
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="copyright">
+                <p>Designed and Built with <i class="fas fa-heart" style="color: #ff4d4d;"></i> by a ProSkills Learner.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar');
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const form = document.getElementById('lead-form');
+
+            // 1. Navigation Bar - Glassmorphic on Scroll
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // 1. Navigation Bar - Responsive Mobile Menu
+            hamburger.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+                // Toggle icon
+                const icon = hamburger.querySelector('i');
+                if (mobileMenu.classList.contains('open')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                    hamburger.querySelector('i').classList.remove('fa-times');
+                    hamburger.querySelector('i').classList.add('fa-bars');
+                });
+            });
+
+            // 4. Contact / Lead Form - Basic Validation
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                let isValid = true;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                // Reset all error messages
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.style.display = 'none';
+                });
+
+                // Function to show error
+                const showError = (field, message) => {
+                    const errorEl = document.querySelector(`.error-message[data-field="${field}"]`);
+                    if (errorEl) {
+                        errorEl.textContent = message;
+                        errorEl.style.display = 'block';
+                    }
+                    isValid = false;
+                };
+
+                // Validation Logic
+                if (!data.name.trim()) {
+                    showError('name', 'Full Name is required.');
+                }
+
+                if (!data.message.trim()) {
+                    showError('message', 'Message is required.');
+                }
+
+                // Email validation (simple regex)
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!data.email.trim() || !emailRegex.test(data.email.trim())) {
+                    showError('email', 'A valid email address is required.');
+                }
+
+                // If all fields are valid
+                if (isValid) {
+                    // In a real application, you would send data to a server here (fetch/XHR).
+                    console.log('Form Submitted Successfully:', data);
+
+                    // Success Message Alert
+                    alert('Thank you for your inquiry! We have received your message and will be in touch soon.');
+
+                    // Reset the form
+                    form.reset();
+                }
+            });
+
+            // 2. Hero Section - Intersection Observer for smooth animation
+            const heroObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // The CSS animations handle the initial fade-in, but this ensures it runs even if scrolled past.
+                        // For this single-page design, we mainly rely on the CSS animation delay on load.
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                // If you remove the CSS animations, you'd add classes here (e.g., entry.target.classList.add('animate-active'))
+                // For now, this is kept simple as the request specified CSS animations.
+                heroObserver.observe(heroContent);
+            }
+
+            // Smooth Scroll for Section Links (Optional, modern browsers support `scroll-behavior: smooth`)
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
