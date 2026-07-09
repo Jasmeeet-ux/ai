@@ -1,0 +1,38 @@
+{
+  "name": "personal-ai-os",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npx turbo run dev",
+    "build": "npx turbo run build --filter=@personal-ai/web...",
+    "lint": "npx turbo run lint",
+    "typecheck": "npx turbo run typecheck",
+    "test": "npx turbo run test",
+    "db:generate": "prisma generate --schema=./packages/database/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=./packages/database/prisma/schema.prisma",
+    "db:push": "prisma db push --schema=./packages/database/prisma/schema.prisma",
+    "db:studio": "prisma studio --schema=./packages/database/prisma/schema.prisma",
+    "docker:dev": "docker compose up -d"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "dexie": "^4.4.3",
+    "dexie-react-hooks": "^4.4.0",
+    "react-dropzone": "^15.0.0"
+  }
+}
